@@ -28,23 +28,29 @@ export async function register(req,res){
         process.env.JWT_SECRET
     )
 
-    await sendEmail({
-        to:email,
-        subject:"Welcome to Perplexity.",
-        html: `
-                <p>Hi ${username},</p>
-                <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
-                <p>Please verify your email address by clicking the link below:</p>
-                <a href="https://perplexity-s7gf.onrender.com/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
-                <p>If you did not create an account, please ignore this email.</p>
-                <p>Best regards,<br>The Perplexity Team</p>
-        `
-
-    })
-    
+    try {
+        await sendEmail({
+            to:email,
+            subject:"Welcome to Perplexity.",
+            html: `
+                    <p>Hi ${username},</p>
+                    <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
+                    <p>Please verify your email address by clicking the link below:</p>
+                    <a href="https://perplexity-s7gf.onrender.com/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
+                    <p>If you did not create an account, please ignore this email.</p>
+                    <p>Best regards,<br>The Perplexity Team</p>
+            `
+        })
+    } catch (emailError) {
+        return res.status(500).json({
+            message:"User registered, but failed to send verification email.",
+            success:false,
+            err: emailError.message
+        })
+    }
 
     res.status(201).json({
-        message:"User registered successfully.",
+        message:"User registered successfully. Please check your email to verify.",
         success:true,
         user:{
             id:user._id,
