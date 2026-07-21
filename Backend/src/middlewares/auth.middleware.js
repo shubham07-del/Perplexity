@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import redis from "../config/cache.js"
 export async function authMiddleware(req,res,next){
     const token = req.cookies.token
     if(!token){
@@ -6,6 +7,15 @@ export async function authMiddleware(req,res,next){
             message:"Invaid token",
             success:false,
             err:"Token not found"
+        })
+    }
+
+    
+    const isTokenBlacklisted = await redis.get(token)
+
+    if(isTokenBlacklisted){
+        return res.status(401).json({
+            message:"Invalid token"
         })
     }
 

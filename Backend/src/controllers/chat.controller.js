@@ -24,19 +24,33 @@ export async function sendMessage(req, res) {
 
   const messages = await messageModel.find({ chat: chatId || chat._id });
 
-  const result = await generateResponse(messages);
+  // 1. Set SSE Headers
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders(); // Ensure headers are sent immediately
 
+  // 2. Send Start Event with chat metadata
+  const startData = {
+    type: "start",
+    chatId: chatId || chat._id,
+    title: title, // only present if new chat
+  };
+  res.write(`data: ${JSON.stringify(startData)}\n\n`);
+
+  // 3. Stream the AI response
+  const result = await generateResponse(messages, res);
+
+  // 4. Save final AI message to DB
   const aiMessage = await messageModel.create({
     chat: chatId || chat._id,
     role: "ai",
     content: result,
   });
 
-    res.status(201).json({
-      title,
-      chat,
-      aiMessage,
-    });
+  // 5. Send Done Event and End Stream
+  res.write(`data: ${JSON.stringify({ type: "done" })}\n\n`);
+  res.end();
 }
 
 

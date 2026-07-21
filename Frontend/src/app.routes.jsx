@@ -2,7 +2,7 @@ import {createBrowserRouter} from "react-router"
 import Register from "./Features/auth/pages/Register"
 import Login from "./Features/auth/pages/Login"
 import Dashboard from "./Features/chat/pages/Dashboard"
-import Protected from "./Features/auth/components/Protected"
+import VerifyEmail from "./Features/auth/components/VerifyEmail"
 
 export const router = createBrowserRouter([
     {
@@ -14,7 +14,11 @@ export const router = createBrowserRouter([
         element:<Login/>
     },
     {
+        path:"/verify-email",
+        element:<VerifyEmail/>
+    },
+    {
         path:"/",
-        element:<Protected><Dashboard/></Protected>
+        element:<Dashboard/>
     }
 ])

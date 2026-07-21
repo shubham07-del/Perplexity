@@ -2,6 +2,8 @@ import userModel from "../models/user.model.js"
 import jwt from "jsonwebtoken"
 import { sendEmail } from "../services/mail.service.js"
 import bcrypt from "bcryptjs"
+import redis from "../config/cache.js"
+
 
 export async function register(req,res){
     const {username, email, password} = req.body
@@ -56,30 +58,26 @@ export async function register(req,res){
 export async function verifyEmail(req,res){
     const {token} = req.query
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-    const user = await userModel.findOne({email:decoded.email})
-    if(!user){
-        return res.status(400).json({
-            message:"Invalid token",
-            success:false,
-            err:"User not found."
-        })
+        const user = await userModel.findOne({email:decoded.email})
+        if(!user){
+            return res.redirect(`http://localhost:5173/verify-email?status=error&message=User+not+found`)
+        }
+
+        if(user.verified){
+            return res.redirect(`http://localhost:5173/verify-email?status=already-verified&message=Email+already+verified`)
+        }
+
+        user.verified = true
+        await user.save()
+
+        return res.redirect(`http://localhost:5173/verify-email?status=success&message=Email+verified+successfully`)
+    } catch (err) {
+        return res.redirect(`http://localhost:5173/verify-email?status=error&message=Invalid+or+expired+token`)
     }
-
-    user.verified = true
-    await user.save()
-
-    const html =
-            `
-        <h1>Email Verified Successfully!</h1>
-        <p>Your email has been verified. You can now log in to your account.</p>
-        <a href="http://localhost:3000/login">Go to Login</a>
-    `
-
-        return res.send(html);
 }
-
 
 export async function login(req,res){
     const {email, password} = req.body
@@ -144,4 +142,19 @@ export async function getMe(req,res){
         success:true,
         user
     })
+}
+
+
+export async function logout(req,res) {
+      const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+
+  res.clearCookie("token");
+
+  if (token) {
+    await redis.set(token, Date.now().toString(), "EX", 60 * 60);
+  }
+
+  res.status(201).json({
+    message: "User logout successfully."
+  });
 }
