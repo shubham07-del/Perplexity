@@ -35,7 +35,7 @@ export async function register(req,res){
                 <p>Hi ${username},</p>
                 <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
                 <p>Please verify your email address by clicking the link below:</p>
-                <a href="https://perplexity-liard.vercel.app/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
+                <a href="https://perplexity-s7gf.onrender.com/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
                 <p>If you did not create an account, please ignore this email.</p>
                 <p>Best regards,<br>The Perplexity Team</p>
         `
