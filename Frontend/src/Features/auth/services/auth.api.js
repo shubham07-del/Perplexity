@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-    baseURL:"https://perplexity-liard.vercel.app/api/auth",
+    baseURL:"https://perplexity-s7gf.onrender.com/api/auth",
     withCredentials:true
 })
 

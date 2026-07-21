@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-    baseURL:"https://perplexity-liard.vercel.app/api/chats",
+    baseURL:"https://perplexity-s7gf.onrender.com/api/chats",
     withCredentials:true
 })
 
@@ -11,7 +11,7 @@ export async function sendMessage({message, chatId}) {
 }
 
 export async function streamMessage({message, chatId}, onChunk, onStart, onDone) {
-    const response = await fetch("https://perplexity-liard.vercel.app/api/chats/message", {
+    const response = await fetch("https://perplexity-s7gf.onrender.com/api/chats/message", {
         method: "POST",
         credentials: "include",
         headers: {
