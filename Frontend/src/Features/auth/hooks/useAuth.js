@@ -9,6 +9,7 @@ export function useAuth(){
         try{
             dispatch(setError(null))
             const data = await register({username, email, password})
+            dispatch(setUser(data.user))
             return true;
         }catch(err){
             const validationError = err.response?.data?.errors?.[0]?.message;
