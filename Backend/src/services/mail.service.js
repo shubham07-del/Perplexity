@@ -1,42 +1,26 @@
-import dns from "dns";
+import * as brevo from '@getbrevo/brevo';
 
-dns.setDefaultResultOrder("ipv4first");
+let defaultClient = brevo.ApiClient.instance;
+let apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = process.env.BREVO_API_KEY; 
 
-import nodemailer from "nodemailer";
-
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.GOOGLE_USER,
-    pass: process.env.GOOGLE_APP_PASSWORD,
-  },
-});
-
-transporter
-  .verify()
-  .then(() => {
-    console.log("Email server is ready to send messages");
-  })
-  .catch((err) => {
-    console.error("Error connecting to email server:", err);
-  });
+let apiInstance = new brevo.TransactionalEmailsApi();
 
 export const sendEmail = async ({ to, subject, text, html }) => {
-  try {
-    const info = await transporter.sendMail({
-      from: `"Signature AI" <${process.env.GOOGLE_USER}>`, // sender address
-      to,
-      subject,
-      text,
-      html,
-    });
+  let sendSmtpEmail = new brevo.SendSmtpEmail();
 
-    console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  sendSmtpEmail.subject = subject;
+  sendSmtpEmail.htmlContent = html;
+  sendSmtpEmail.textContent = text;
+  
+  sendSmtpEmail.sender = { name: "Signature AI", email: process.env.GOOGLE_USER }; 
+  sendSmtpEmail.to = [{ email: to }];
+
+  try {
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log('Brevo Email sent successfully. ID: ' + data.messageId);
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error('Error sending email via Brevo:', error);
     throw error;
   }
 };
