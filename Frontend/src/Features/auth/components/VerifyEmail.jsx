@@ -11,7 +11,7 @@ const VerifyEmail = () => {
   const noStatus = !status
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#141416] relative overflow-hidden font-sans">
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#141416] px-3 py-4 sm:px-4 sm:py-6 md:py-8 relative overflow-hidden font-sans">
 
       {/* Ambient glows */}
       <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/[0.06] rounded-full blur-[150px]" />
@@ -22,19 +22,18 @@ const VerifyEmail = () => {
       <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-indigo-500/20 rounded-full animate-ping" style={{ animationDuration: '3s' }} />
       <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-indigo-300/25 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
 
-      <div className="relative z-10 w-full max-w-[460px] mx-4">
+      <div className="relative z-10 w-full max-w-[460px] mx-auto">
         {/* Top accent line */}
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent mb-8 rounded-full" />
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent mb-6 sm:mb-8 rounded-full" />
 
-        <div className="bg-[#1c1c1f] border border-white/[0.07] rounded-2xl p-8 sm:p-10 shadow-[0_8px_40px_rgba(0,0,0,0.5)]">
+        <div className="bg-[#1c1c1f] border border-white/[0.07] rounded-2xl p-5 sm:p-8 md:p-10 shadow-[0_8px_40px_rgba(0,0,0,0.5)]">
 
           {/* Brand header */}
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-              <img src="/signature.ai" alt="Signature logo" />
-                
+              <img src="/signature.ai" alt="Signature logo" className="w-full h-auto object-contain" />
             </div>
-            <span className="text-white/40 text-sm font-medium tracking-wider uppercase">Signature</span>
+            <span className="text-white/40 text-sm sm:text-[15px] font-medium tracking-wider uppercase">Signature</span>
           </div>
 
           {/* ─── SUCCESS STATE ─── */}
@@ -51,10 +50,10 @@ const VerifyEmail = () => {
                 </div>
               </div>
 
-              <h1 className="text-[28px] font-bold text-white tracking-tight mb-2">
+              <h1 className="text-2xl sm:text-[28px] font-bold text-white tracking-tight mb-2">
                 {status === 'already-verified' ? 'Already Verified' : 'Email Verified!'}
               </h1>
-              <p className="text-[#71717a] text-[15px] text-center mb-2">
+              <p className="text-[#71717a] text-sm sm:text-[15px] text-center mb-2">
                 {status === 'already-verified'
                   ? 'Your email has already been verified. You can sign in.'
                   : 'Your email has been verified successfully!'}
@@ -103,8 +102,8 @@ const VerifyEmail = () => {
                 </div>
               </div>
 
-              <h1 className="text-[28px] font-bold text-white tracking-tight mb-2">Check your email</h1>
-              <p className="text-[#71717a] text-[15px] text-center mb-2">
+              <h1 className="text-2xl sm:text-[28px] font-bold text-white tracking-tight mb-2">Check your email</h1>
+              <p className="text-[#71717a] text-sm sm:text-[15px] text-center mb-2">
                 We've sent a verification link to your email address.
               </p>
 
@@ -164,8 +163,8 @@ const VerifyEmail = () => {
                 </div>
               </div>
 
-              <h1 className="text-[28px] font-bold text-white tracking-tight mb-2">Verification Failed</h1>
-              <p className="text-[#71717a] text-[15px] text-center mb-2">
+              <h1 className="text-2xl sm:text-[28px] font-bold text-white tracking-tight mb-2">Verification Failed</h1>
+              <p className="text-[#71717a] text-sm sm:text-[15px] text-center mb-2">
                 {message || 'The verification link is invalid or has expired.'}
               </p>
 

@@ -34,31 +34,30 @@ const Register = () => {
   const strength = getStrength();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#141416] relative overflow-hidden font-sans">
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#141416] px-3 py-4 sm:px-4 sm:py-6 md:py-8 relative overflow-hidden font-sans">
       {/* Ambient glows */}
       <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/[0.06] rounded-full blur-[150px]" />
       <div className="absolute bottom-[-50px] right-[-50px] w-[400px] h-[400px] bg-indigo-600/[0.04] rounded-full blur-[120px]" />
 
-      <div className="relative z-10 w-full max-w-[420px] mx-4">
+      <div className="relative z-10 w-full max-w-[420px] mx-auto">
         {/* Top accent line */}
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent mb-8 rounded-full" />
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent mb-6 sm:mb-8 rounded-full" />
 
-        <div className="bg-[#1c1c1f] border border-white/[0.07] rounded-2xl p-8 sm:p-10 shadow-[0_8px_40px_rgba(0,0,0,0.5)]">
+        <div className="bg-[#1c1c1f] border border-white/[0.07] rounded-2xl p-5 sm:p-8 md:p-10 shadow-[0_8px_40px_rgba(0,0,0,0.5)]">
           {/* Header */}
-          <div className="mb-9">
-            <div className="flex items-center gap-3 mb-6">
+          <div className="mb-7 sm:mb-9">
+            <div className="flex items-center gap-3 mb-5 sm:mb-6">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                <img src="/signature.ai" alt="Signature logo" />
-                
+                <img src="/signature.ai" alt="Signature logo" className="w-full h-auto object-contain" />
               </div>
-              <span className="text-white/40 text-sm font-medium tracking-wider uppercase">
+              <span className="text-white/40 text-sm sm:text-[15px] font-medium tracking-wider uppercase">
                 Signature
               </span>
             </div>
-            <h1 className="text-[28px] font-bold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-[28px] font-bold text-white tracking-tight">
               Create account
             </h1>
-            <p className="text-[#71717a] mt-1.5 text-[15px]">
+            <p className="text-[#71717a] mt-1.5 text-sm sm:text-[15px]">
               Start your journey with Signature
             </p>
           </div>
@@ -71,7 +70,7 @@ const Register = () => {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div>
               <label
                 htmlFor="username"
@@ -89,7 +88,7 @@ const Register = () => {
                   setUsername(e.target.value);
                 }}
                 placeholder="johndoe"
-                className="w-full px-4 py-3 bg-[#141416] border border-white/[0.08] rounded-xl text-white placeholder-[#3f3f46] text-[14px] focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all duration-200"
+                className="w-full px-4 py-3 bg-[#141416] border border-white/[0.08] rounded-xl text-white placeholder-[#3f3f46] text-sm sm:text-[14px] focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all duration-200"
               />
             </div>
 
@@ -110,7 +109,7 @@ const Register = () => {
                   setEmail(e.target.value);
                 }}
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 bg-[#141416] border border-white/[0.08] rounded-xl text-white placeholder-[#3f3f46] text-[14px] focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all duration-200"
+                className="w-full px-4 py-3 bg-[#141416] border border-white/[0.08] rounded-xl text-white placeholder-[#3f3f46] text-sm sm:text-[14px] focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all duration-200"
               />
             </div>
 
@@ -132,7 +131,7 @@ const Register = () => {
                     setPassword(e.target.value);
                   }}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 bg-[#141416] border border-white/[0.08] rounded-xl text-white placeholder-[#3f3f46] text-[14px] focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all duration-200 pr-11"
+                  className="w-full px-4 py-3 bg-[#141416] border border-white/[0.08] rounded-xl text-white placeholder-[#3f3f46] text-sm sm:text-[14px] focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all duration-200 pr-11"
                 />
                 <button
                   type="button"
@@ -189,14 +188,14 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] text-[14px] tracking-wide cursor-pointer shadow-lg shadow-indigo-500/20 mt-2"
+              className="w-full py-3.5 sm:py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] text-sm sm:text-[14px] tracking-wide cursor-pointer shadow-lg shadow-indigo-500/20 mt-2"
             >
               {loading ? "Creating..." : "Create Account"}
             </button>
           </form>
 
           {/* Footer */}
-          <p className="text-center mt-8 text-[13px] text-[#4a4a52]">
+          <p className="text-center mt-6 sm:mt-8 text-xs sm:text-[13px] text-[#4a4a52]">
             Already have an account?{" "}
             <Link
               to="/login"
@@ -208,7 +207,7 @@ const Register = () => {
         </div>
 
         {/* Bottom accent */}
-        <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mt-8" />
+        <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mt-6 sm:mt-8" />
       </div>
     </div>
   );
