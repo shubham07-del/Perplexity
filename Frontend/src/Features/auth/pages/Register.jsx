@@ -11,11 +11,14 @@ const Register = () => {
 
   const { handleRegister } = useAuth();
   const navigate = useNavigate();
+  const { error, loading } = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleRegister({ username, email, password });
-    navigate("/verify-email");
+    const success = await handleRegister({ username, email, password });
+    if(success) {
+      navigate("/verify-email");
+    }
   };
 
   const getStrength = () => {
@@ -58,6 +61,13 @@ const Register = () => {
               Start your journey with Signature
             </p>
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-[13px] font-medium text-center">
+              {error}
+            </div>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -177,9 +187,10 @@ const Register = () => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] text-[14px] tracking-wide cursor-pointer shadow-lg shadow-indigo-500/20 mt-2"
+              disabled={loading}
+              className="w-full py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] text-[14px] tracking-wide cursor-pointer shadow-lg shadow-indigo-500/20 mt-2"
             >
-              Create Account
+              {loading ? "Creating..." : "Create Account"}
             </button>
           </form>
 
