@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { RouterProvider } from 'react-router'
 import { router } from './app.routes'
 import { useAuth } from './Features/auth/hooks/useAuth'
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
@@ -16,13 +16,17 @@ const App = () => {
       <RouterProvider router={router}/>
        <ToastContainer 
        position="top-right"
-  autoClose={3000}
-  hideProgressBar={false}
+  autoClose={3500}
+  hideProgressBar={true}
   newestOnTop={true}
   closeOnClick
   pauseOnHover
   draggable
-  theme="colored"/>
+  theme="dark"
+  transition={Slide}
+  toastClassName="!bg-[#1c1c1f] !border !border-white/[0.08] !rounded-2xl !shadow-[0_8px_40px_rgba(0,0,0,0.5)] mt-4 mr-2"
+  bodyClassName="!font-sans !text-[13.5px] !font-medium !text-[#e4e4e7] flex items-center p-1"
+  />
     </div>
   )
 }

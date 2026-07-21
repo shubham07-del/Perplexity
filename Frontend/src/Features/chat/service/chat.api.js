@@ -5,18 +5,32 @@ const api = axios.create({
     withCredentials:true
 })
 
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 export async function sendMessage({message, chatId}) {
     const response = await api.post("/message",{message, chat:chatId})
     return response.data
 }
 
 export async function streamMessage({message, chatId}, onChunk, onStart, onDone) {
+    const token = localStorage.getItem("token");
+    const headers = {
+        "Content-Type": "application/json"
+    };
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const response = await fetch("https://perplexity-s7gf.onrender.com/api/chats/message", {
         method: "POST",
         credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers,
         body: JSON.stringify({ message, chat: chatId })
     });
 

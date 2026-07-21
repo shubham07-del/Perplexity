@@ -5,6 +5,14 @@ const api = axios.create({
     withCredentials:true
 })
 
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 export async function login({email, password}) {
     const response = await api.post("/login",{email, password})
     return response.data

@@ -133,6 +133,7 @@ export async function login(req, res) {
   res.status(200).json({
     message: "user logged in successfully.",
     success: true,
+    token, // Send token in response payload
     user: {
       username: user.username,
       email: user.email,
