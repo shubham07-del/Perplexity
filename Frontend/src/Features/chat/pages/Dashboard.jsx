@@ -424,18 +424,18 @@ const Dashboard = () => {
               <div className="h-px bg-white/[0.05] mx-3.5" />
 
               {/* Bottom bar */}
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center px-3 sm:px-3.5 py-2.5">
+              <div className="flex items-center gap-2 px-3 sm:px-3.5 py-2.5">
                 <div className="w-[26px] h-[26px] rounded-full bg-gradient-to-br from-indigo-600 to-indigo-400 flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0">
                   {user ? user.username?.charAt(0)?.toUpperCase() || "S" : "?"}
                 </div>
-                <span className="w-full sm:flex-1 text-[10px] sm:text-[11px] text-[#3f3f46] select-none">
+                <span className="hidden sm:block flex-1 text-[10px] sm:text-[11px] text-[#3f3f46] select-none">
                   {user
                     ? "Enter to send · Shift+Enter for newline"
                     : "Sign in required to send messages"}
                 </span>
                 <button
                   onClick={handleSend}
-                  className={`w-full sm:w-auto px-4 py-2 sm:py-1.5 rounded-full text-[12px] font-semibold font-sans tracking-wide transition-all ${
+                  className={`ml-auto shrink-0 px-4 py-2 rounded-full text-[12px] font-semibold font-sans tracking-wide transition-all ${
                     input.trim()
                       ? "bg-gradient-to-r from-indigo-600 to-indigo-500 text-white cursor-pointer shadow-[0_2px_14px_rgba(99,102,241,0.4)] hover:shadow-[0_4px_22px_rgba(99,102,241,0.6)]"
                       : "bg-white/[0.04] border border-white/[0.07] text-[#3f3f46] cursor-default"

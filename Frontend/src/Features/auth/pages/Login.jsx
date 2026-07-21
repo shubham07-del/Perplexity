@@ -27,7 +27,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-[#141416] px-3 py-4 sm:px-4 sm:py-6 md:py-8 relative overflow-hidden font-sans">
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#141416] px-3 py-4 sm:px-4 sm:py-6 md:py-8 relative overflow-hidden font-sans flex items-center justify-center">
 
       {/* Ambient glows */}
       <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/[0.06] rounded-full blur-[150px]" />
