@@ -1,163 +1,165 @@
-import userModel from "../models/user.model.js"
-import jwt from "jsonwebtoken"
-import { sendEmail } from "../services/mail.service.js"
-import bcrypt from "bcryptjs"
-import redis from "../config/cache.js"
+import userModel from "../models/user.model.js";
+import jwt from "jsonwebtoken";
+import { sendEmail } from "../services/mail.service.js";
+import bcrypt from "bcryptjs";
+import redis from "../config/cache.js";
 
+export async function register(req, res) {
+  const { username, email, password } = req.body;
 
-export async function register(req,res){
-    const {username, email, password} = req.body
-    
-    let isUserExist = await userModel.findOne({email})
-    if(isUserExist){
-        return res.status(400).json({
-            message:"User already exist with this email address.",
-            success:false,
-            err:"user already exist."
-        })
-    }
+  let isUserExist = await userModel.findOne({ email });
+  if (isUserExist) {
+    return res.status(400).json({
+      message: "User already exist with this email address.",
+      success: false,
+      err: "user already exist.",
+    });
+  }
 
-   const user = await userModel.create({
-        username,
-        email,
-        password
-    })
+  const user = await userModel.create({
+    username,
+    email,
+    password,
+  });
 
-    const emailVerificationToken = jwt.sign(
-        {email:user.email},
-        process.env.JWT_SECRET
-    )
+  const emailVerificationToken = jwt.sign(
+    { email: user.email },
+    process.env.JWT_SECRET,
+  );
 
-    try {
-        await sendEmail({
-            to:email,
-            subject:"Welcome to Perplexity.",
-            html: `
+  try {
+    await sendEmail({
+      to: email,
+      subject: "Welcome to Signature.",
+      text: `Hi ${username},\n\nThank you for registering at Signature. Please verify your email address by clicking the link below:\n\nhttps://perplexity-s7gf.onrender.com/api/auth/verify-email?token=${emailVerificationToken}\n\nIf you did not create an account, please ignore this email.`,
+      html: `
                     <p>Hi ${username},</p>
-                    <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
+                    <p>Thank you for registering at <strong>Signature</strong>. We're excited to have you on board!</p>
                     <p>Please verify your email address by clicking the link below:</p>
                     <a href="https://perplexity-s7gf.onrender.com/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
                     <p>If you did not create an account, please ignore this email.</p>
-                    <p>Best regards,<br>The Perplexity Team</p>
-            `
-        })
-    } catch (emailError) {
-        return res.status(500).json({
-            message:"User registered, but failed to send verification email.",
-            success:false,
-            err: emailError.message
-        })
-    }
+                    <p>Best regards,<br>The Signature Team</p>
+            `,
+    });
+  } catch (emailError) {
+    return res.status(500).json({
+      message: "User registered, but failed to send verification email.",
+      success: false,
+      err: emailError.message,
+    });
+  }
 
-    res.status(201).json({
-        message:"User registered successfully. Please check your email to verify.",
-        success:true,
-        user:{
-            id:user._id,
-            username:user.username,
-            email:user.email
-        },
-    })
-
+  res.status(201).json({
+    message: "User registered successfully. Please check your email to verify.",
+    success: true,
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    },
+  });
 }
 
-export async function verifyEmail(req,res){
-    const {token} = req.query
+export async function verifyEmail(req, res) {
+  const { token } = req.query;
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await userModel.findOne({email:decoded.email})
-        if(!user){
-            return res.redirect(`https://perplexity-liard.vercel.app/verify-email?status=error&message=User+not+found`)
-        }
-
-        if(user.verified){
-            return res.redirect(`https://perplexity-liard.vercel.app/verify-email?status=already-verified&message=Email+already+verified`)
-        }
-
-        user.verified = true
-        await user.save()
-
-        return res.redirect(`https://perplexity-liard.vercel.app/verify-email?status=success&message=Email+verified+successfully`)
-    } catch (err) {
-        return res.redirect(`https://perplexity-liard.vercel.app/verify-email?status=error&message=Invalid+or+expired+token`)
+    const user = await userModel.findOne({ email: decoded.email });
+    if (!user) {
+      return res.redirect(
+        `https://perplexity-liard.vercel.app/verify-email?status=error&message=User+not+found`,
+      );
     }
+
+    if (user.verified) {
+      return res.redirect(
+        `https://perplexity-liard.vercel.app/verify-email?status=already-verified&message=Email+already+verified`,
+      );
+    }
+
+    user.verified = true;
+    await user.save();
+
+    return res.redirect(
+      `https://perplexity-liard.vercel.app/verify-email?status=success&message=Email+verified+successfully`,
+    );
+  } catch (err) {
+    return res.redirect(
+      `https://perplexity-liard.vercel.app/verify-email?status=error&message=Invalid+or+expired+token`,
+    );
+  }
 }
 
-export async function login(req,res){
-    const {email, password} = req.body
-    const user = await userModel.findOne({email}).select("+password")
+export async function login(req, res) {
+  const { email, password } = req.body;
+  const user = await userModel.findOne({ email }).select("+password");
 
-    if(!user){
-        return res.status(401).json({
-            message:"Invalid credentials",
-            success:false,
-            err:"user not found."
-        })
-    }
+  if (!user) {
+    return res.status(401).json({
+      message: "Invalid credentials",
+      success: false,
+      err: "user not found.",
+    });
+  }
 
-    const isValidPassword = await bcrypt.compare(password, user.password)
-    if(!isValidPassword){
-        return res.status(401).json({
-            message:"Invalid credentials",
-            success:false,
-            err:"user not found."
-        })
-    }
+  const isValidPassword = await bcrypt.compare(password, user.password);
+  if (!isValidPassword) {
+    return res.status(401).json({
+      message: "Invalid credentials",
+      success: false,
+      err: "user not found.",
+    });
+  }
 
-    if(!user.verified){
-        return res.status(400).json({
-            message:"Please verify your email first.",
-            success:false,
-            err:"Email not verified."
-        })
-    }
-    const token = jwt.sign(
-        {id:user._id},
-        process.env.JWT_SECRET,
-        {expiresIn:"3d"}
-    )
+  if (!user.verified) {
+    return res.status(400).json({
+      message: "Please verify your email first.",
+      success: false,
+      err: "Email not verified.",
+    });
+  }
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "3d",
+  });
 
-    res.cookie("token", token, {
-        httpOnly: true,
-        secure: true, 
-        sameSite: "none",
-        maxAge: 3 * 24 * 60 * 60 * 1000
-    })
-    res.status(200).json({
-        message:"user logged in successfully.",
-        success:true,
-        user:{
-            username:user.username,
-            email:user.email
-        }
-    })
-
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    maxAge: 3 * 24 * 60 * 60 * 1000,
+  });
+  res.status(200).json({
+    message: "user logged in successfully.",
+    success: true,
+    user: {
+      username: user.username,
+      email: user.email,
+    },
+  });
 }
 
+export async function getMe(req, res) {
+  const id = req.user.id;
+  const user = await userModel.findById(id).select("-password");
+  if (!user) {
+    return res.status(401).json({
+      message: "Invalid credentials",
+      success: false,
+      err: "user not found.",
+    });
+  }
 
-export async function getMe(req,res){
-    const id = req.user.id
-    const user = await userModel.findById(id).select("-password")
-    if(!user){
-        return res.status(401).json({
-            message:"Invalid credentials",
-            success:false,
-            err:"user not found."
-        })
-    }
-
-    res.status(200).json({
-        message:"User fetched successfully.",
-        success:true,
-        user
-    })
+  res.status(200).json({
+    message: "User fetched successfully.",
+    success: true,
+    user,
+  });
 }
 
-
-export async function logout(req,res) {
-      const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+export async function logout(req, res) {
+  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
   res.clearCookie("token", {
     httpOnly: true,
@@ -170,6 +172,6 @@ export async function logout(req,res) {
   }
 
   res.status(201).json({
-    message: "User logout successfully."
+    message: "User logout successfully.",
   });
 }
