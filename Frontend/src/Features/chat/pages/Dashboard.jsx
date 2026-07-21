@@ -314,7 +314,7 @@ const Dashboard = () => {
       {/* ══════════════ MAIN ══════════════ */}
       <main className="flex-1 flex flex-col min-w-0 bg-[#141416]">
         {/* Topbar */}
-        <header className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 border-b border-white/[0.05] flex-shrink-0">
+        <header className="sticky top-0 z-20 flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 border-b border-white/[0.05] flex-shrink-0 bg-[#141416]/95 backdrop-blur-sm">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="w-[30px] h-[30px] rounded-[7px] border border-white/[0.08] bg-transparent cursor-pointer flex items-center justify-center text-[#71717a] hover:bg-white/[0.06] hover:text-[#a1a1aa] transition-all flex-shrink-0"
