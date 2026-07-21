@@ -82,11 +82,11 @@ const Dashboard = () => {
           flex flex-col flex-shrink-0
           bg-[#1c1c1f] border-r border-white/[0.06]
           transition-all duration-300 overflow-hidden
-          ${sidebarOpen ? "w-[85vw] max-w-[270px] sm:w-[270px] sm:min-w-[270px] opacity-100" : "w-0 min-w-0 opacity-0 pointer-events-none"}
+          ${sidebarOpen ? "w-[88vw] max-w-72 sm:w-72 sm:min-w-72 opacity-100" : "w-0 min-w-0 opacity-0 pointer-events-none"}
         `}
       >
         {/* Inner width wrapper so content doesn't squish during animation */}
-        <div className="w-full max-w-[270px] flex flex-col h-full">
+        <div className="w-full max-w-72 flex flex-col h-full">
           {/* Brand */}
           <div className="flex items-center gap-3 px-4 py-5 border-b border-white/[0.05] flex-shrink-0">
             <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
@@ -317,7 +317,7 @@ const Dashboard = () => {
         <header className="sticky top-0 z-20 flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 border-b border-white/[0.05] flex-shrink-0 bg-[#141416]/95 backdrop-blur-sm">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="w-[30px] h-[30px] rounded-[7px] border border-white/[0.08] bg-transparent cursor-pointer flex items-center justify-center text-[#71717a] hover:bg-white/[0.06] hover:text-[#a1a1aa] transition-all flex-shrink-0"
+            className="w-7 h-7 rounded-lg border border-white/[0.08] bg-transparent cursor-pointer flex items-center justify-center text-[#71717a] hover:bg-white/[0.06] hover:text-[#a1a1aa] transition-all shrink-0"
           >
             <svg
               width="15"
@@ -338,7 +338,7 @@ const Dashboard = () => {
             {chats[activeChat]?.title || "New Conversation"}
           </h2>
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-400/[0.08] border border-emerald-400/[0.15]">
-            <span className="w-[6px] h-[6px] rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.6)] animate-pulse flex-shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.6)] animate-pulse shrink-0" />
             <span className="text-[10px] sm:text-[11px] text-emerald-400 font-medium">
               Online
             </span>
@@ -346,7 +346,7 @@ const Dashboard = () => {
         </header>
 
         {/* Content column */}
-        <div className="flex-1 flex flex-col min-h-0 max-w-[900px] w-full mx-auto">
+        <div className="flex-1 flex flex-col min-h-0 max-w-5xl w-full mx-auto">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto px-3 sm:px-5 py-4 sm:py-6 flex flex-col gap-3 no-scrollbar">
             {chats[currentChatId]?.messages?.map((msg) => (
@@ -355,7 +355,7 @@ const Dashboard = () => {
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[86%] sm:max-w-[72%] px-3 sm:px-4 py-[10px] sm:py-[11px] text-sm sm:text-[13.5px] leading-relaxed ${
+                  className={`max-w-[92%] sm:max-w-[80%] lg:max-w-[78%] xl:max-w-[72%] px-3 sm:px-4 py-2.5 sm:py-2.75 text-sm sm:text-[13.5px] leading-relaxed ${
                     msg.role === "user"
                       ? "text-indigo-100 font-medium rounded-[18px_18px_4px_18px] shadow-[0_4px_20px_rgba(99,102,241,0.3)]"
                       : "bg-[#212126] border border-white/[0.07] text-[#d1d5db] rounded-[18px_18px_18px_4px] shadow-[0_2px_12px_rgba(0,0,0,0.4)]"
@@ -401,8 +401,8 @@ const Dashboard = () => {
           </div>
 
           {/* Input box */}
-          <div className="flex-shrink-0 px-2 sm:px-3 pb-3 sm:pb-4 pt-2">
-            <div className="bg-[#1c1c1f] border border-white/[0.07] rounded-[14px] sm:rounded-[16px] shadow-[0_8px_40px_rgba(0,0,0,0.5)] overflow-hidden">
+          <div className="shrink-0 px-2 sm:px-3 pb-3 sm:pb-4 pt-2">
+            <div className="bg-[#1c1c1f] border border-white/[0.07] rounded-[14px] sm:rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.5)] overflow-hidden">
               {/* Textarea */}
               <div className="px-3 sm:px-4 pt-3 pb-2.5">
                 <textarea
@@ -425,7 +425,7 @@ const Dashboard = () => {
 
               {/* Bottom bar */}
               <div className="flex items-center gap-2 px-3 sm:px-3.5 py-2.5">
-                <div className="w-[26px] h-[26px] rounded-full bg-gradient-to-br from-indigo-600 to-indigo-400 flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-600 to-indigo-400 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
                   {user ? user.username?.charAt(0)?.toUpperCase() || "S" : "?"}
                 </div>
                 <span className="hidden sm:block flex-1 text-[10px] sm:text-[11px] text-[#3f3f46] select-none">

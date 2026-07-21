@@ -14,15 +14,15 @@ const VerifyEmail = () => {
     <div className="min-h-screen w-full overflow-x-hidden bg-[#141416] px-3 py-4 sm:px-4 sm:py-6 md:py-8 relative overflow-hidden font-sans">
 
       {/* Ambient glows */}
-      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/[0.06] rounded-full blur-[150px]" />
-      <div className="absolute bottom-[-50px] right-[-50px] w-[400px] h-[400px] bg-indigo-600/[0.04] rounded-full blur-[120px]" />
+      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-72 h-72 sm:w-96 sm:h-96 bg-indigo-500/[0.06] rounded-full blur-[150px]" />
+      <div className="absolute bottom-[-50px] right-[-50px] w-64 h-64 sm:w-80 sm:h-80 bg-indigo-600/[0.04] rounded-full blur-[120px]" />
 
       {/* Animated floating orbs */}
       <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-indigo-400/30 rounded-full animate-pulse" />
       <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-indigo-500/20 rounded-full animate-ping" style={{ animationDuration: '3s' }} />
       <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-indigo-300/25 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
 
-      <div className="relative z-10 w-full max-w-[460px] mx-auto">
+      <div className="relative z-10 w-full max-w-lg mx-auto">
         {/* Top accent line */}
         <div className="h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent mb-6 sm:mb-8 rounded-full" />
 

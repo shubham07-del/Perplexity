@@ -36,10 +36,10 @@ const Register = () => {
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-[#141416] px-3 py-4 sm:px-4 sm:py-6 md:py-8 relative overflow-hidden font-sans">
       {/* Ambient glows */}
-      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/[0.06] rounded-full blur-[150px]" />
-      <div className="absolute bottom-[-50px] right-[-50px] w-[400px] h-[400px] bg-indigo-600/[0.04] rounded-full blur-[120px]" />
+      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-72 h-72 sm:w-96 sm:h-96 bg-indigo-500/[0.06] rounded-full blur-[150px]" />
+      <div className="absolute bottom-[-50px] right-[-50px] w-64 h-64 sm:w-80 sm:h-80 bg-indigo-600/[0.04] rounded-full blur-[120px]" />
 
-      <div className="relative z-10 w-full max-w-[420px] mx-auto">
+      <div className="relative z-10 w-full max-w-md mx-auto">
         {/* Top accent line */}
         <div className="h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent mb-6 sm:mb-8 rounded-full" />
 
@@ -139,7 +139,7 @@ const Register = () => {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4a4a52] hover:text-indigo-400 transition-colors cursor-pointer"
                 >
                   <svg
-                    className="w-[18px] h-[18px]"
+                    className="w-4 h-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
