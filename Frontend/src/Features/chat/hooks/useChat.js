@@ -2,6 +2,7 @@ import { initSocketConnection } from "../service/chat.socket";
 import {sendMessage, streamMessage, getChats, getMessages} from "../service/chat.api"
 import {setChats, setCurrentChatId, setError, setLoading, createNewChat, addNewMessage, addMessages, appendMessageChunk} from "../chat.slice"
 import {useDispatch} from "react-redux"
+import { toast } from "react-toastify"
 
 export const useChat = ()=>{
 
@@ -64,44 +65,57 @@ export const useChat = ()=>{
             );
         } catch (error) {
             console.error("Streaming error:", error);
+            toast.error("Failed to send message");
             dispatch(setLoading(false));
         }
     }
 
     async function handleGetChats() {
-        dispatch(setLoading(true))
-        const data = await getChats()
-        const {chat: chats} = data
-        dispatch(setChats(chats.reduce((acc, chat)=>{
-            acc[chat._id]={
-                _id:chat._id,
-                title:chat.title,
-                messages:[],
-                lastUpdate:chat.updatedAt,
-            }
-            return acc
-        }, {})))
-
-        dispatch(setLoading(false))
+        try {
+            dispatch(setLoading(true))
+            const data = await getChats()
+            const {chat: chats} = data
+            dispatch(setChats(chats.reduce((acc, chat)=>{
+                acc[chat._id]={
+                    _id:chat._id,
+                    title:chat.title,
+                    messages:[],
+                    lastUpdate:chat.updatedAt,
+                }
+                return acc
+            }, {})))
+        } catch (error) {
+            console.error("Failed to get chats:", error);
+            toast.error("Failed to load chats");
+        } finally {
+            dispatch(setLoading(false))
+        }
     }
 
 
     async function handleOpenMessage(chatId) {
-        dispatch(setLoading(true))
-        const data = await getMessages(chatId)
-        const {messages} = data
-        
-        const formattedMessage = messages.map(msg=>({
-            content:msg.content,
-            role: msg.role
-        }))
+        try {
+            dispatch(setLoading(true))
+            const data = await getMessages(chatId)
+            const {messages} = data
+            
+            const formattedMessage = messages.map(msg=>({
+                content:msg.content,
+                role: msg.role
+            }))
 
-        dispatch(addMessages({
-            chatId,
-            messages:formattedMessage
-        }))
+            dispatch(addMessages({
+                chatId,
+                messages:formattedMessage
+            }))
 
-        dispatch(setCurrentChatId(chatId))
+            dispatch(setCurrentChatId(chatId))
+        } catch (error) {
+            console.error("Failed to open messages:", error);
+            toast.error("Failed to load messages");
+        } finally {
+            dispatch(setLoading(false))
+        }
     }
 
 
