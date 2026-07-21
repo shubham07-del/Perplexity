@@ -35,7 +35,7 @@ export async function register(req,res){
                 <p>Hi ${username},</p>
                 <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
                 <p>Please verify your email address by clicking the link below:</p>
-                <a href="http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
+                <a href="https://perplexity-liard.vercel.app/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
                 <p>If you did not create an account, please ignore this email.</p>
                 <p>Best regards,<br>The Perplexity Team</p>
         `
@@ -63,19 +63,19 @@ export async function verifyEmail(req,res){
 
         const user = await userModel.findOne({email:decoded.email})
         if(!user){
-            return res.redirect(`http://localhost:5173/verify-email?status=error&message=User+not+found`)
+            return res.redirect(`https://perplexity-liard.vercel.app/verify-email?status=error&message=User+not+found`)
         }
 
         if(user.verified){
-            return res.redirect(`http://localhost:5173/verify-email?status=already-verified&message=Email+already+verified`)
+            return res.redirect(`https://perplexity-liard.vercel.app/verify-email?status=already-verified&message=Email+already+verified`)
         }
 
         user.verified = true
         await user.save()
 
-        return res.redirect(`http://localhost:5173/verify-email?status=success&message=Email+verified+successfully`)
+        return res.redirect(`https://perplexity-liard.vercel.app/verify-email?status=success&message=Email+verified+successfully`)
     } catch (err) {
-        return res.redirect(`http://localhost:5173/verify-email?status=error&message=Invalid+or+expired+token`)
+        return res.redirect(`https://perplexity-liard.vercel.app/verify-email?status=error&message=Invalid+or+expired+token`)
     }
 }
 
