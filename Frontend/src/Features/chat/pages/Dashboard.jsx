@@ -346,9 +346,9 @@ const Dashboard = () => {
         </header>
 
         {/* Content column */}
-        <div className="flex-1 flex flex-col min-h-0 overflow-hidden max-w-5xl w-full mx-auto">
+        <div className="flex-1 flex flex-col min-h-0 max-w-5xl w-full mx-auto">
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-3 sm:px-5 py-4 sm:py-6 flex flex-col gap-3 no-scrollbar">
+          <div className="flex-1 min-h-0 overflow-y-auto px-3 sm:px-5 py-4 sm:py-6 flex flex-col gap-3 no-scrollbar">
             {chats[currentChatId]?.messages?.map((msg) => (
               <div
                 key={msg.id}
