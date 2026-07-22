@@ -66,7 +66,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex h-full w-full overflow-hidden bg-[#141416] text-white font-sans overflow-x-hidden">
+    <div className="flex h-[100dvh] w-full overflow-hidden bg-[#141416] text-white font-sans overflow-x-hidden">
       {/* ── Mobile backdrop ── */}
       {sidebarOpen && (
         <div
