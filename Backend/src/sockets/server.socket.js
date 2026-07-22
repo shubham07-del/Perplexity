@@ -3,12 +3,15 @@ import {Server} from  'socket.io'
 let io;
 
 export function initSocket(httpServer){
-    io = new Server(httpServer,{
-        cors:{
-            origin:"https://perplexity-liard.vercel.app",
-            credentials:true    
-        }
-    })
+    io = new Server(httpServer, {
+    cors: {
+        origin: [
+            "https://signature-ai.online",
+            "https://www.signature-ai.online"
+        ],
+        credentials: true
+    }
+});
 
     console.log("Socket.io server is running")
     io.on("connection", (socket)=>{
