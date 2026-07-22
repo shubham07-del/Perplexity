@@ -9,8 +9,8 @@ const app = express()
 app.set("trust proxy", 1);
 
 app.use(cors({
-    origin:"https://perplexity-liard.vercel.app",
-    credentials:true
+    origin: ["https://signature-ai.online", "https://www.signature-ai.online"],
+    credentials: true
 }))
 
 
