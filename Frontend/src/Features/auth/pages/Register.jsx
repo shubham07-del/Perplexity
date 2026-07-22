@@ -190,7 +190,7 @@ const Register = () => {
               disabled={loading}
               className="w-full py-3.5 sm:py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 text-white font-semibold rounded-xl transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99] text-sm sm:text-[14px] tracking-wide cursor-pointer shadow-lg shadow-indigo-500/20 mt-2"
             >
-              {loading ? "Creating..." : "Create Account"}
+              {loading ? "Registering..." : "Create Account"}
             </button>
           </form>
 
