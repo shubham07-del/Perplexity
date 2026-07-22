@@ -66,7 +66,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#141416] text-white font-sans overflow-x-hidden">
+    <div className="flex h-full w-full overflow-hidden bg-[#141416] text-white font-sans overflow-x-hidden">
       {/* ── Mobile backdrop ── */}
       {sidebarOpen && (
         <div
@@ -312,7 +312,7 @@ const Dashboard = () => {
       </aside>
 
       {/* ══════════════ MAIN ══════════════ */}
-      <main className="flex-1 flex flex-col min-w-0 bg-[#141416] pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+      <main className="flex-1 flex flex-col min-w-0 min-h-0 bg-[#141416]">
         {/* Topbar */}
         <header className="sticky top-0 z-20 flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 border-b border-white/[0.05] flex-shrink-0 bg-[#141416]/95 backdrop-blur-sm">
           <button
@@ -346,7 +346,7 @@ const Dashboard = () => {
         </header>
 
         {/* Content column */}
-        <div className="flex-1 flex flex-col min-h-0 max-w-5xl w-full mx-auto pb-4 sm:pb-6">
+        <div className="flex-1 flex flex-col min-h-0 max-w-5xl w-full mx-auto">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto px-3 sm:px-5 py-4 sm:py-6 flex flex-col gap-3 no-scrollbar">
             {chats[currentChatId]?.messages?.map((msg) => (
@@ -401,7 +401,7 @@ const Dashboard = () => {
           </div>
 
           {/* Input box */}
-          <div className="shrink-0 px-2 sm:px-3 pb-3 sm:pb-4 pt-2">
+          <div className="shrink-0 px-2 sm:px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-4 pt-2">
             <div className="bg-[#1c1c1f] border border-white/[0.07] rounded-[14px] sm:rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.5)] overflow-hidden">
               {/* Textarea */}
               <div className="px-3 sm:px-4 pt-3 pb-2.5">
