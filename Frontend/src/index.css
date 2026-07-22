@@ -40,17 +40,10 @@ body {
 }
 
 html, body, #root {
-  /* Use dvh for mobile browsers so 100% height accounts for browser chrome */
+  height: 100vh;
   height: 100dvh;
-  height: 100vh; /* fallback for older browsers */
   width: 100%;
   overflow: hidden;
-}
-
-@supports (height: 100dvh) {
-  html, body, #root {
-    height: 100dvh;
-  }
 }
 
 /* Hide scrollbar but keep scrolling */
