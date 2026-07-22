@@ -78,15 +78,15 @@ const Dashboard = () => {
       {/* ══════════════ SIDEBAR ══════════════ */}
       <aside
         className={`
-          fixed md:relative top-0 left-0 h-full z-50
-          flex flex-col flex-shrink-0
+          fixed md:relative top-0 left-0 h-[100dvh] z-50
+          flex flex-col shrink-0
           bg-[#1c1c1f] border-r border-white/[0.06]
           transition-all duration-300 overflow-hidden
           ${sidebarOpen ? "w-11/12 max-w-xs sm:w-72 shrink-0 opacity-100" : "w-0 min-w-0 opacity-0 pointer-events-none"}
         `}
       >
         {/* Inner width wrapper so content doesn't squish during animation */}
-        <div className="w-full max-w-72 flex flex-col h-full">
+        <div className="w-full max-w-72 flex flex-col h-[100dvh]">
           {/* Brand */}
           <div className="flex items-center gap-3 px-4 py-5 border-b border-white/[0.05] flex-shrink-0">
             <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
@@ -113,7 +113,7 @@ const Dashboard = () => {
           </div>
 
           {/* Search */}
-          <div className="mx-3 mt-3 mb-1.5 flex items-center gap-2 px-3 py-2 bg-white/[0.04] border border-white/[0.07] rounded-[9px]">
+          <div className="mx-3 mt-3 mb-1.5 flex items-center gap-2 px-3 py-2 bg-white/[0.04] border border-white/[0.07] rounded-[9px] shrink-0">
             <svg
               width="13"
               height="13"
