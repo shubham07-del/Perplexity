@@ -15,7 +15,7 @@ const Dashboard = () => {
   const [input, setInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeChat, setActiveChat] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -317,7 +317,7 @@ const Dashboard = () => {
         <header className="sticky top-0 z-20 flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 border-b border-white/[0.05] flex-shrink-0 bg-[#141416]/95 backdrop-blur-sm">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="w-7 h-7 rounded-lg border border-white/[0.08] bg-transparent cursor-pointer flex items-center justify-center text-[#71717a] hover:bg-white/[0.06] hover:text-[#a1a1aa] transition-all shrink-0"
+            className="md:hidden w-7 h-7 rounded-lg border border-white/[0.08] bg-transparent cursor-pointer flex items-center justify-center text-[#71717a] hover:bg-white/[0.06] hover:text-[#a1a1aa] transition-all shrink-0"
           >
             <svg
               width="15"
@@ -345,12 +345,11 @@ const Dashboard = () => {
           </div>
         </header>
 
-        {/* Body: position:relative container — messages scroll, input is always at bottom */}
-        <div className="flex-1 relative overflow-hidden max-w-5xl w-full mx-auto">
-          {/* Messages — absolute fill, scrollable, with bottom padding so content clears the input */}
+        {/* Body: Flex container — messages flex-1 and scroll, input shrinks */}
+        <div className="flex-1 flex flex-col overflow-hidden max-w-5xl w-full mx-auto">
+          {/* Messages — flex-1 to fill space, scrollable */}
           <div
-            className="absolute inset-0 overflow-y-auto no-scrollbar px-3 sm:px-5 py-4 sm:py-6 flex flex-col gap-3"
-            style={{ paddingBottom: '140px' }}
+            className="flex-1 overflow-y-auto no-scrollbar px-3 sm:px-5 py-4 sm:py-6 flex flex-col gap-3"
           >
             {chats[currentChatId]?.messages?.map((msg) => (
               <div
@@ -401,8 +400,8 @@ const Dashboard = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input — always pinned to the bottom via position:absolute */}
-          <div className="absolute bottom-0 left-0 right-0 px-2 sm:px-3 pb-3 sm:pb-4 pt-2 bg-gradient-to-t from-[#141416] via-[#141416]/95 to-transparent">
+          {/* Input — fixed in flex flow at the bottom */}
+          <div className="shrink-0 px-2 sm:px-3 pb-3 sm:pb-4 pt-2 bg-gradient-to-t from-[#141416] via-[#141416]/95 to-transparent z-10 relative">
             <div className="bg-[#1c1c1f] border border-white/[0.07] rounded-[14px] sm:rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.5)] overflow-hidden">
               {/* Textarea */}
               <div className="px-3 sm:px-4 pt-3 pb-2.5">
