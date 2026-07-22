@@ -82,7 +82,7 @@ const Dashboard = () => {
           flex flex-col flex-shrink-0
           bg-[#1c1c1f] border-r border-white/[0.06]
           transition-all duration-300 overflow-hidden
-          ${sidebarOpen ? "w-[88vw] max-w-72 sm:w-72 sm:min-w-72 opacity-100" : "w-0 min-w-0 opacity-0 pointer-events-none"}
+          ${sidebarOpen ? "w-11/12 max-w-xs sm:w-72 shrink-0 opacity-100" : "w-0 min-w-0 opacity-0 pointer-events-none"}
         `}
       >
         {/* Inner width wrapper so content doesn't squish during animation */}
@@ -345,26 +345,27 @@ const Dashboard = () => {
           </div>
         </header>
 
-        {/* Content column */}
-        <div className="flex-1 flex flex-col min-h-0 max-w-5xl w-full mx-auto">
-          {/* Messages */}
-          <div className="flex-1 min-h-0 overflow-y-auto px-3 sm:px-5 py-4 sm:py-6 flex flex-col gap-3 no-scrollbar">
+        {/* Body: position:relative container — messages scroll, input is always at bottom */}
+        <div className="flex-1 relative overflow-hidden max-w-5xl w-full mx-auto">
+          {/* Messages — absolute fill, scrollable, with bottom padding so content clears the input */}
+          <div
+            className="absolute inset-0 overflow-y-auto no-scrollbar px-3 sm:px-5 py-4 sm:py-6 flex flex-col gap-3"
+            style={{ paddingBottom: '140px' }}
+          >
             {chats[currentChatId]?.messages?.map((msg) => (
               <div
                 key={msg.id}
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[92%] sm:max-w-[80%] lg:max-w-[78%] xl:max-w-[72%] px-3 sm:px-4 py-2.5 sm:py-2.75 text-sm sm:text-[13.5px] leading-relaxed ${
+                  className={`w-fit max-w-[92%] sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl px-3 sm:px-4 py-2.5 sm:py-2.75 text-sm sm:text-[13.5px] leading-relaxed ${
                     msg.role === "user"
                       ? "text-indigo-100 font-medium rounded-[18px_18px_4px_18px] shadow-[0_4px_20px_rgba(99,102,241,0.3)]"
                       : "bg-[#212126] border border-white/[0.07] text-[#d1d5db] rounded-[18px_18px_18px_4px] shadow-[0_2px_12px_rgba(0,0,0,0.4)]"
                   }`}
                   style={
                     msg.role === "user"
-                      ? {
-                          background: "linear-gradient(135deg,#4338ca,#6366f1)",
-                        }
+                      ? { background: "linear-gradient(135deg,#4338ca,#6366f1)" }
                       : {}
                   }
                 >
@@ -400,8 +401,8 @@ const Dashboard = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input box */}
-          <div className="shrink-0 px-2 sm:px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-4 pt-2">
+          {/* Input — always pinned to the bottom via position:absolute */}
+          <div className="absolute bottom-0 left-0 right-0 px-2 sm:px-3 pb-3 sm:pb-4 pt-2 bg-gradient-to-t from-[#141416] via-[#141416]/95 to-transparent">
             <div className="bg-[#1c1c1f] border border-white/[0.07] rounded-[14px] sm:rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.5)] overflow-hidden">
               {/* Textarea */}
               <div className="px-3 sm:px-4 pt-3 pb-2.5">

@@ -14,8 +14,8 @@ const VerifyEmail = () => {
     <div className="min-h-screen w-full overflow-x-hidden bg-[#141416] px-3 py-4 sm:px-4 sm:py-6 md:py-8 relative overflow-hidden font-sans">
 
       {/* Ambient glows */}
-      <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-72 h-72 sm:w-96 sm:h-96 bg-indigo-500/[0.06] rounded-full blur-[150px]" />
-      <div className="absolute bottom-[-50px] right-[-50px] w-64 h-64 sm:w-80 sm:h-80 bg-indigo-600/[0.04] rounded-full blur-[120px]" />
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[80vw] h-[80vw] max-w-md max-h-96 bg-indigo-500/[0.06] rounded-full blur-[100px] sm:blur-[150px]" />
+      <div className="absolute bottom-[-5%] right-[-10%] w-[70vw] h-[70vw] max-w-sm max-h-80 bg-indigo-600/[0.04] rounded-full blur-[80px] sm:blur-[120px]" />
 
       {/* Animated floating orbs */}
       <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-indigo-400/30 rounded-full animate-pulse" />
