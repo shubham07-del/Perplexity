@@ -6,7 +6,7 @@ import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
-
+console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
   const auth = useAuth()
   useEffect(()=>{
     auth.handleGetMe()
