@@ -154,6 +154,11 @@ const Login = () => {
 
           <div className="flex justify-center">
             <GoogleLogin
+              theme="outline"
+              size="large"
+              shape="pill"
+              text="continue_with"
+              width="360"
               onSuccess={async (response) => {
                 const success = await handleGoogleLogin(response.credential);
 
