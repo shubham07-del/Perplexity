@@ -34,15 +34,12 @@ export async function logout() {
 }
 
 export async function googleLogin(credential) {
-  console.log("F");
-  console.log(import.meta.env.VITE_API_URL);
 
   const { data } = await api.post(
-    `${import.meta.env.VITE_API_URL}/google`,
+    `/google`,
     { credential }
   );
 
-  console.log("G");
 
   return data;
 }
