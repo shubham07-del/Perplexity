@@ -1,6 +1,12 @@
 import { useDispatch } from "react-redux";
 import { setError, setLoading, setUser } from "../auth.slice";
-import { getMe, login, logout, register } from "../services/auth.api";
+import {
+  getMe,
+  googleLogin,
+  login,
+  logout,
+  register,
+} from "../services/auth.api";
 import { toast } from "react-toastify";
 
 export function useAuth() {
@@ -75,36 +81,27 @@ export function useAuth() {
     }
   }
 
- async function handleGoogleLogin(credential) {
-  console.log("A");
+  async function handleGoogleLogin(credential) {
+    try {
+      dispatch(setLoading(true));
 
-  try {
-    dispatch(setLoading(true));
+      const data = await googleLogin(credential);
 
-    console.log("B");
+      dispatch(setUser(data.user));
 
-    const data = await googleLogin(credential);
+      toast.success("Login successful 😊");
 
-    console.log("C", data);
+      return true;
+    } catch (error) {
+      const errMsg = error.response?.data?.message || "Google login failed.";
 
-    dispatch(setUser(data.user));
+      toast.error(errMsg);
 
-    toast.success("Login successful 😊");
-
-    return true;
-  } catch (error) {
-    console.log("D", error);
-
-    const errMsg = error.response?.data?.message || "Google login failed.";
-
-    toast.error(errMsg);
-
-    return false;
-  } finally {
-    console.log("E");
-    dispatch(setLoading(false));
+      return false;
+    } finally {
+      dispatch(setLoading(false));
+    }
   }
-}
   return {
     handleGetMe,
     handleLogin,

@@ -155,17 +155,14 @@ const Login = () => {
           <div className="flex justify-center">
             <GoogleLogin
               onSuccess={async (response) => {
-                console.log("STEP 1");
-                console.log(response);
-
                 const success = await handleGoogleLogin(response.credential);
 
-                console.log("STEP 2", success);
-
-                if (success) navigate("/");
+                if (success) {
+                  navigate("/");
+                }
               }}
-              onError={(err) => {
-                console.log("Google Error", err);
+              onError={() => {
+                toast.error("Google login cancelled.");
               }}
             />
           </div>
