@@ -75,29 +75,36 @@ export function useAuth() {
     }
   }
 
-  async function handleGoogleLogin(credential) {
-    try {
-      dispatch(setLoading(true));
+ async function handleGoogleLogin(credential) {
+  console.log("A");
 
-      const data = await googleLogin(credential);
+  try {
+    dispatch(setLoading(true));
 
-      dispatch(setUser(data.user));
+    console.log("B");
 
-      toast.success("Login successful 😊");
+    const data = await googleLogin(credential);
 
-      return true;
-    } catch (error) {
-      const errMsg = error.response?.data?.message || "Google login failed.";
+    console.log("C", data);
 
-      dispatch(setError(errMsg));
+    dispatch(setUser(data.user));
 
-      toast.error(errMsg);
+    toast.success("Login successful 😊");
 
-      return false;
-    } finally {
-      dispatch(setLoading(false));
-    }
+    return true;
+  } catch (error) {
+    console.log("D", error);
+
+    const errMsg = error.response?.data?.message || "Google login failed.";
+
+    toast.error(errMsg);
+
+    return false;
+  } finally {
+    console.log("E");
+    dispatch(setLoading(false));
   }
+}
   return {
     handleGetMe,
     handleLogin,
