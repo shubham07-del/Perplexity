@@ -4,7 +4,6 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../services/mail.service.js";
-import bcrypt from "bcryptjs";
 import redis from "../config/cache.js";
 
 export async function register(req, res) {
