@@ -155,26 +155,17 @@ const Login = () => {
           <div className="flex justify-center">
             <GoogleLogin
               onSuccess={async (response) => {
-                console.log("STEP 1: onSuccess");
+                console.log("STEP 1");
+                console.log(response);
 
-                console.log("Credential:", response.credential);
+                const success = await handleGoogleLogin(response.credential);
 
-                console.log("STEP 2: Before handleGoogleLogin");
+                console.log("STEP 2", success);
 
-                try {
-                  const success = await handleGoogleLogin(response.credential);
-
-                  console.log("STEP 3: After handleGoogleLogin", success);
-
-                  if (success) {
-                    navigate("/");
-                  }
-                } catch (err) {
-                  console.error("STEP 4:", err);
-                }
+                if (success) navigate("/");
               }}
               onError={(err) => {
-                console.error(err);
+                console.log("Google Error", err);
               }}
             />
           </div>

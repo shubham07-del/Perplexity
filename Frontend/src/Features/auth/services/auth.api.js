@@ -35,7 +35,7 @@ export async function logout() {
 
 export async function googleLogin(credential) {
   const { data } = await api.post(
-    `${import.meta.env.VITE_API_URL}/api/auth/google`,
+    `${import.meta.env.VITE_API_URL}/google`,
     { credential },
   );
 
