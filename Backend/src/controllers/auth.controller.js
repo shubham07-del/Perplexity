@@ -1,3 +1,6 @@
+import { OAuth2Client } from "google-auth-library";
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../services/mail.service.js";
@@ -20,6 +23,7 @@ export async function register(req, res) {
     username,
     email,
     password,
+    provider: "local",
   });
 
   const emailVerificationToken = jwt.sign(
@@ -60,51 +64,25 @@ export async function register(req, res) {
   });
 }
 
-export async function verifyEmail(req, res) {
-  const { token } = req.query;
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await userModel.findOne({ email: decoded.email });
-    if (!user) {
-      return res.redirect(
-        `https://perplexity-liard.vercel.app/verify-email?status=error&message=User+not+found`,
-      );
-    }
-
-    if (user.verified) {
-      return res.redirect(
-        `https://perplexity-liard.vercel.app/verify-email?status=already-verified&message=Email+already+verified`,
-      );
-    }
-
-    user.verified = true;
-    await user.save();
-
-    return res.redirect(
-      `https://perplexity-liard.vercel.app/verify-email?status=success&message=Email+verified+successfully`,
-    );
-  } catch (err) {
-    return res.redirect(
-      `https://perplexity-liard.vercel.app/verify-email?status=error&message=Invalid+or+expired+token`,
-    );
-  }
-}
-
 export async function login(req, res) {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email }).select("+password");
 
   if (!user) {
     return res.status(401).json({
-      message: "Invalid credentials",
       success: false,
-      err: "user not found.",
+      message: "Invalid credentials",
     });
   }
+  if (user.provider === "google") {
+    return res.status(400).json({
+      success: false,
+      message:
+        "This account was created using Google. Please continue with Google.",
+    });
+  }
+  const isValidPassword = await user.comparePassword(password);
 
-  const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword) {
     return res.status(401).json({
       message: "Invalid credentials",
@@ -139,6 +117,114 @@ export async function login(req, res) {
       email: user.email,
     },
   });
+}
+
+export async function googleLogin(req, res) {
+   try {
+    const { credential } = req.body;
+
+    if (!credential) {
+      return res.status(400).json({
+        success: false,
+        message: "Google credential is required.",
+      });
+    }
+
+    // Verify Google ID Token
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    if (!payload.email_verified) {
+      return res.status(400).json({
+        success: false,
+        message: "Google email is not verified.",
+      });
+    }
+
+    // Find user by email
+    let user = await userModel.findOne({ email: payload.email });
+
+    // Create user if not exists
+    if (!user) {
+      user = await userModel.create({
+        username: payload.name,
+        email: payload.email,
+        provider: "google",
+        verified: true,
+      });
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "3d",
+      }
+    );
+
+    // Set cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Google login successful.",
+      token,
+      user: {
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Google Login Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Google authentication failed.",
+      error: error.message,
+    });
+  }
+}
+
+export async function verifyEmail(req, res) {
+  const { token } = req.query;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await userModel.findOne({ email: decoded.email });
+    if (!user) {
+      return res.redirect(
+        `https://perplexity-liard.vercel.app/verify-email?status=error&message=User+not+found`,
+      );
+    }
+
+    if (user.verified) {
+      return res.redirect(
+        `https://perplexity-liard.vercel.app/verify-email?status=already-verified&message=Email+already+verified`,
+      );
+    }
+
+    user.verified = true;
+    await user.save();
+
+    return res.redirect(
+      `https://perplexity-liard.vercel.app/verify-email?status=success&message=Email+verified+successfully`,
+    );
+  } catch (err) {
+    return res.redirect(
+      `https://perplexity-liard.vercel.app/verify-email?status=error&message=Invalid+or+expired+token`,
+    );
+  }
 }
 
 export async function getMe(req, res) {
