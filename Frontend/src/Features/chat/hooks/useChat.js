@@ -74,7 +74,7 @@ export const useChat = ()=>{
         try {
             dispatch(setLoading(true))
             const data = await getChats()
-            const {chat: chats} = data
+            const {chats} = data
             dispatch(setChats(chats.reduce((acc, chat)=>{
                 acc[chat._id]={
                     _id:chat._id,
