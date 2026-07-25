@@ -65,7 +65,7 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   const { email, password } = req.body;
-  const user = await userModel.findOne({ email }).select("+password");
+  const user = await userModel.findOne({ email }).select("+password").lean();
 
   if (!user) {
     return res.status(401).json({
@@ -119,7 +119,7 @@ export async function login(req, res) {
 }
 
 export async function googleLogin(req, res) {
-   try {
+  try {
     const { credential } = req.body;
 
     if (!credential) {
@@ -158,13 +158,9 @@ export async function googleLogin(req, res) {
     }
 
     // Generate JWT
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "3d",
-      }
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "3d",
+    });
 
     // Set cookie
     res.cookie("token", token, {
@@ -228,7 +224,18 @@ export async function verifyEmail(req, res) {
 
 export async function getMe(req, res) {
   const id = req.user.id;
-  const user = await userModel.findById(id).select("-password");
+
+  const cachedUser = await redis.get(`user:${id}`);
+  if (cachedUser) {
+    return res.status(200).json({
+      message: "User fetched successfully.",
+      success: true,
+      user: JSON.parse(cachedUser),
+    });
+  }
+
+  const user = await userModel.findById(id).select("-password").lean()
+  
   if (!user) {
     return res.status(401).json({
       message: "Invalid credentials",
@@ -236,7 +243,8 @@ export async function getMe(req, res) {
       err: "user not found.",
     });
   }
-
+  
+  await redis.set(`user:${id}`, JSON.stringify(user), "EX", 300);
   res.status(200).json({
     message: "User fetched successfully.",
     success: true,
