@@ -66,12 +66,12 @@ export async function getChats(req,res) {
         chats:JSON.parse(cachedChats)
       })
     }
-    const chat = await chatModel.find({user:user.id}).lean()
-    await redis.set(`chats:${user.id}`,JSON.stringify(chat),"EX",300)
+    const chats = await chatModel.find({user:user.id}).lean()
+    await redis.set(`chats:${user.id}`,JSON.stringify(chats),"EX",300)
 
     res.status(200).json({
         message:"Chat retrieved successfully.",
-        chat
+        chats
     })
 }
 
