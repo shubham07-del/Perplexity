@@ -24,6 +24,10 @@ export async function authMiddleware(req,res,next){
         req.user = decoded
         next()
     }catch(err){
-        console.log(err.message)
+        return res.status(401).json({
+        success: false,
+        message: "Invalid or expired token",
+        error: err.message,
+    });
     }
 }
