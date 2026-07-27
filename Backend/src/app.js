@@ -12,9 +12,10 @@ app.use(cors({
   origin: [
     "https://signature-ai.online",
     "https://www.signature-ai.online",
-    "https://perplexity-liard.vercel.app"
+    "http://localhost:5173"
   ],
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "DELETE"]
 }));
 app.use(express.json())
 app.use(cookieParser())

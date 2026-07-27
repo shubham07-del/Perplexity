@@ -1,10 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://perplexity-s7gf.onrender.com/api/auth",
+  baseURL: "https://api.signature-ai.online/api/auth",
   withCredentials: true,
 });
-
 
 export async function login({ email, password }) {
   const response = await api.post("/login", { email, password });

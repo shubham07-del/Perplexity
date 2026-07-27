@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-    baseURL:"https://perplexity-s7gf.onrender.com/api/chats",
+    baseURL:"https://api.signature-ai.online/api/chats",
     withCredentials:true
 })
 

@@ -7,9 +7,11 @@ export function initSocket(httpServer){
     cors: {
         origin: [
             "https://signature-ai.online",
-            "https://www.signature-ai.online"
+            "https://www.signature-ai.online",
+            "http://localhost:5173"
         ],
-        credentials: true
+        credentials: true,
+        methods: ["GET", "POST"]
     }
 });
 
@@ -25,4 +27,4 @@ export function getIo(){
     }
 
     return io
-}5173
+}

@@ -5,7 +5,7 @@ let socket = null;
 export const initSocketConnection = ()=>{
     if (!socket) {
         const token = localStorage.getItem("token");
-        socket = io("https://perplexity-s7gf.onrender.com",{
+        socket = io("https://api.signature-ai.online",{
             withCredentials:true,
             auth: { token }
         })
