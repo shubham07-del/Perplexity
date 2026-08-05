@@ -37,9 +37,6 @@ export function useAuth() {
     try {
       dispatch(setError(true));
       const data = await login({ email, password });
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-      }
       dispatch(setUser(data.user));
       toast.success("Login successful 😊");
       return true;
@@ -69,7 +66,6 @@ export function useAuth() {
     try {
       dispatch(setLoading(true));
       await logout();
-      localStorage.removeItem("token");
       dispatch(setUser(null));
       toast.success("Logged out successfully");
     } catch (err) {
